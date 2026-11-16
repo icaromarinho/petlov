@@ -6,11 +6,10 @@ on: push
 jobs:
   tests:
     runs-on: ubuntu-latest
+
     container:
       image: cypress/browsers:22.16.0
       options: --user 1001
-    
-    browser: chrome
 
     strategy:
       fail-fast: false
@@ -18,13 +17,11 @@ jobs:
       matrix:
         include:
           - container: 1
-            spec: |
-              cypress/e2e/cadastro.cy.js
-              
+            spec: cypress/e2e/cadastro.cy.js
+
           - container: 2
-            spec: |
-              cypress/e2e/landing.cy.js
-              
+            spec: cypress/e2e/landing.cy.js
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -32,6 +29,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
+          browser: chrome
           spec: ${{ matrix.spec }}
 
       - name: Upload screenshots
